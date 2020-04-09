@@ -1,12 +1,10 @@
-# OptimusPrime
+# OptimusPrimeNow
 OptimusPrime is designed to help people find delivery windows on Amazon PrimeNow during COVID lockdown!
-
-## This repo has amazonPrimeNow.py python script
   
 ## Purpose:
-This script automates the process of continuously checking Amazon PrimeNow for availabilty of delivery windows and sends a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating. At the writing this, slots open up very briefly and disappear soon enough.
+This script automates the process of continuously checking Amazon PrimeNow for availabilty of delivery windows and sends a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating. At the time of writing this, slots open up very briefly and disappear soon enough.
 
-This also takes into account 2FA authentication and/or captcha process if the user encounters it at login time (this is ofcourse a manual action but this is only encountered, if at all, at startup when we need to login in to the account). The assumption is that your cart is not empty. It is highly recommended that you keep all the items you need in your cart so that you can order as soon as you get the notification.
+This also takes into account 2FA authentication and/or captcha process if the user encounters it at login time (this is ofcourse a manual action but this is only encountered, if at all, at startup when we need to login into the account). The assumption is that your cart is not empty. It is highly recommended that you keep all the items you need in your cart so that you can order as soon as you get the notification.
 
 Some timed delays are added in to make sure we do not let the service believe it is a potential DoS attack. You can change these values if you wish.
 
@@ -30,6 +28,6 @@ First things first. My total experience of Selenium is limited to developing thi
 Fully automate the ordering process. There are a few things to keep in mind before doing this however. To list just one example: All items that were added in cart are not guaranteed to be present at time of check out as many go out of stock. This can at times lead to your cart value dropping lower than the free delievery threshold and may incurr additional charges etc.
 
 ## Licensing:
-No expert in writing this text too! You are free to use these scripts as you see fit. There is no guarantee that this would work for everyuse case. By using these scripts you absolve the author of any responsibilities/liabilities/damages that may arise by the usage of these scripts. Use at your own risk!
+No expert in writing this text too! You are free to use these scripts as you see fit. There is no guarantee that this would work for everyuse case. By using this script you absolve the author of any responsibilities/liabilities/damages that may arise by the usage of this script. Use at your own risk!
   
   
