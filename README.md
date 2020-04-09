@@ -1,5 +1,5 @@
 # OptimusPrimeNow
-OptimusPrime is designed to help people find delivery windows on Amazon PrimeNow during COVID lockdown!
+OptimusPrimeNow is designed to help people find the much coveted delivery windows on Amazon Prime during COVID-19 lockdown!
   
 ## Purpose:
 This script automates the process of continuously checking Amazon PrimeNow for availabilty of delivery windows and sends a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating. At the time of writing this, slots open up very briefly and disappear soon enough.
