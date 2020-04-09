@@ -1,16 +1,16 @@
 # OptimusPrime
-OptimusPrime is designed to help people find delivery windows on Amazon Prime and Fresh during COVID lockdown
+OptimusPrime is designed to help people find delivery windows on Amazon PrimeNow during COVID lockdown!
 
-## This repo has two python scripts:
-* ### amazonPrimeNow.py
-  Use this if you want to order from Amazon PrimeNow.
-* ### amazonFresh.py
-  Use this if you want to order from Amazon Fresh.
+## This repo has amazonPrimeNow.py python script
   
 ## Purpose:
-These scripts automate the process of continuously checking Amazon PrimeNow/Fresh for availabilty or delivery windows and send a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating. At the writing this, slots open up very briefly and disappear soon enough.
+This script automates the process of continuously checking Amazon PrimeNow for availabilty of delivery windows and sends a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating. At the writing this, slots open up very briefly and disappear soon enough.
+
 This also takes into account 2FA authentication and/or captcha process if the user encounters it at login time (this is ofcourse a manual action but this is only encountered, if at all, at startup when we need to login in to the account). The assumption is that your cart is not empty. It is highly recommended that you keep all the items you need in your cart so that you can order as soon as you get the notification.
+
 Some timed delays are added in to make sure we do not let the service believe it is a potential DoS attack. You can change these values if you wish.
+
+Familiarity with basics of python is assumed.
 
 ## Dependencies:
 * Selenium: See https://www.selenium.dev/
@@ -25,6 +25,9 @@ Before you run the scripts please fill in the necessary info that has been left 
 
 ## Finally:
 First things first. My total experience of Selenium is limited to developing this script! There are quite a few things that can be improved here but I want to get a working version up and running first rather than perfecting it. Things like putting in a config file to take in time delay params etc.
+
+## Future work:
+Fully automate the ordering process. There are a few things to keep in mind before doing this however. To list just one example: All items that were added in cart are not guaranteed to be present at time of check out as many go out of stock. This can at times lead to your cart value dropping lower than the free delievery threshold and may incurr additional charges etc.
 
 ## Licensing:
 No expert in writing this text too! You are free to use these scripts as you see fit. There is no guarantee that this would work for everyuse case. By using these scripts you absolve the author of any responsibilities/liabilities/damages that may arise by the usage of these scripts. Use at your own risk!
