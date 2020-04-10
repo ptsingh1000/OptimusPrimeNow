@@ -20,15 +20,15 @@ Familiarity with basics of python is assumed.
 ## Usage:
 ### Platforms: Linux, MacOS
 On a linux env run: python amazonPrimeNow.py --user [your amazon account username] --password [your password]
-Before you run the scripts please fill in the necessary info that has been left blank such as twilio sid and token, cell number etc.
+Before you run the script please fill in the necessary info that has been left blank such as twilio sid and token, cell number etc.
 
 ## Finally:
-First things first. My total experience of Selenium is limited to developing this script! There are quite a few things that can be improved here but I want to get a working version up and running first rather than perfecting it. Things like putting in a config file to take in time delay params etc.
+First things first. My total experience of Selenium is limited to developing this script! There are quite a few things that can be improved here but I want to get a working version up and running first rather than perfecting it. Things like putting in a config file to take in time delay params etc. Next Selenium is supposed to be used as a testing framework. I have tried to test this script to cover some variety of workflows but there can be some gotchas that I might have missed so don't be surprised if this does not work exactly the way it is supposed to on the first run! You might have to do some minor tweaks here and there!
 
 ## Future work:
 Fully automate the ordering process. There are a few things to keep in mind before doing this however. To list just one example: All items that were added in cart are not guaranteed to be present at time of check out as many go out of stock. This can at times lead to your cart value dropping lower than the free delievery threshold and may incurr additional charges etc.
 
 ## Licensing:
-No expert in writing this text too! You are free to use these scripts as you see fit. There is no guarantee that this would work for everyuse case. By using this script you absolve the author of any responsibilities/liabilities/damages that may arise by the usage of this script. Use at your own risk!
+No expert in writing this text too! You are free to use this script as you see fit. There is no guarantee that this would work for everyuse case. By using this script you absolve the author of any responsibilities/liabilities/damages **(feel free to let your imagination insert more similar negative words here)** that may arise by the usage of this script. Use at your own risk!
   
-  
+ ## Most importantly: Stay Safe! 
