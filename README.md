@@ -19,7 +19,7 @@ Familiarity with basics of python is assumed.
 
 ## Usage:
 ### Platforms: Linux, MacOS
-On a linux env run: python amazonPrimeNow.py --user <your amazon account username> --password <your password>
+On a linux env run: python amazonPrimeNow.py --user [your amazon account username] --password [your password]
 Before you run the scripts please fill in the necessary info that has been left blank such as twilio sid and token, cell number etc.
 
 ## Finally:
