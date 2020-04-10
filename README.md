@@ -1,10 +1,10 @@
 # OptimusPrimeNow
-**OptimusPrimeNow** is designed to help people find the much coveted delivery windows on Amazon Prime during COVID-19 lockdown!
+**OptimusPrimeNow** is designed to help people find the much coveted delivery windows on Amazon Prime during COVID-19 lockdown automatically! :smiley:
   
 ## Purpose:
-This script automates the process of continuously checking Amazon PrimeNow for availabilty of delivery windows and sends a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating. At the time of writing this, slots open up very briefly and disappear soon enough.
+This script automates the process of continuously checking Amazon PrimeNow for availabilty of delivery windows and sends a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating in recent days. At the time of writing this, slots open up very briefly and disappear soon enough. I spent few days to look for slots only to get frustrated by repeated checking and finding nothing. As they say: **"Frustration is the mother of all inventions!"** (actually probably I said this :wink:), this constant frustration led me to write up this script. I hope I can save you some of it and more importantly help you stay safe and indoors!
 
-This also takes into account 2FA authentication and/or captcha process if the user encounters it at login time (this is ofcourse a manual action but this is only encountered, if at all, at startup when we need to login into the account). The assumption is that your cart is not empty. It is highly recommended that you keep all the items you need in your cart so that you can order as soon as you get the notification.
+This also takes into account 2FA authentication, if enabled, and/or captcha process if the user encounters it at login time (this is ofcourse a manual action but this is only encountered, if at all, at startup when we need to login into the account). The script assumes that your cart is not empty when it is run. It is highly recommended that you keep all the items you need in your cart so that you can order as soon as you get the notification. I have seen slots disappear in less than a minute or two at times!
 
 Some timed delays are added in to make sure we do not let the service believe it is a potential DoS attack. You can change these values if you wish.
 
@@ -31,4 +31,4 @@ Fully automate the ordering process. There are a few things to keep in mind befo
 ## Licensing:
 No expert in writing this text too! You are free to use this script as you see fit. There is no guarantee that this would work for everyuse case. By using this script you absolve the author of any responsibilities/liabilities/damages **(feel free to let your imagination insert more similar negative words here)** that may arise by the usage of this script. Use at your own risk!
   
- ## Most importantly: Stay Safe! 
+ ## Stay Safe! 
