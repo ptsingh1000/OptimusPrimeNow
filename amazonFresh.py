@@ -96,14 +96,13 @@ class AutomateGroceryDelivery:
             except:
                 pass
 
-    def goCartCheckoutReadyAndNotify(self):
-        cart = self.driver.find_element_by_id('nav-cart-count')
-        cart.click()
-        time.sleep(2)
+    def goToCheckOutPage(self):
         # go to fresh checkout page
         checkout_btn = self.driver.find_element_by_xpath('//input[starts-with(@name,"proceedToALMCheckout")]')
         checkout_btn.click()
 
+        time.sleep(self.short_pause)
+        
         # Before you checkout page
         continue_btn = self.driver.find_element_by_xpath('//a[@name="proceedToCheckout"]')
         continue_btn.click()
@@ -113,7 +112,14 @@ class AutomateGroceryDelivery:
         try:
             self.login(False) # no redirect to login page # we already at the login screen
         except:
-            print("No password asked again... Continuing...")
+            print("No password asked again... Continuing...")        
+
+    def goCartCheckoutReadyAndNotify(self):
+        cart = self.driver.find_element_by_id('nav-cart-count')
+        cart.click()
+        time.sleep(self.short_pause)
+        
+        self.goToCheckOutPage()
 
         # See if slots available
         slot_available = False
@@ -124,15 +130,8 @@ class AutomateGroceryDelivery:
             # sometimes after many refreshes you are re-directed to the proceed to checkout page again
             # if so then go to final checkout page
             try:
-                cb = self.driver.find_element_by_xpath('//span[contains(@class, "cart-checkout-button")]')
-                cb.click()
-                print("checkout button again...")
-                # see if password is asked again
-                # if so then enter it
-                try:
-                    self.login(False) # no redirect to login page # we already at the login screen
-                except:
-                    print("No password asked again... Continuing...")                
+                self.goToCheckOutPage()
+                print("checkout button again...")           
             except:
             # do nothing
                 pass
@@ -170,3 +169,4 @@ class AutomateGroceryDelivery:
 a = AutomateGroceryDelivery()
 a.login()
 a.goCartCheckoutReadyAndNotify()
+
