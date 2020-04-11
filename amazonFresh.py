@@ -8,9 +8,6 @@ from selenium.common import exceptions
 
 from twilio.rest import Client
 
-sys.path.append("/Users/ptsingh/Library/Python/2.7/lib/python/site-packages")
-sys.path.append("/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python")
-
 #############################################################################################
 #Please Read: I am yet to get a succesful slot on Amazon Fresh so I do not know exactly how
 # the page looks like when slots are available so I am currently checking only based
