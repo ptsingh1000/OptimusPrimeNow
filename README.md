@@ -3,9 +3,9 @@
 
 ## Scripts:
 * ### amazonPrimeNow.py
-  Use this to order from Amazon Prime Now
+  Use this to order from Amazon Prime Now. This script also handles cookies so that you do not have to login at each run.     This is important when running initial tests as log in prompt at each run can slow down testing and deployment. OTP         validation may still be required if you have 2FA enabled. Also enhanced to write logs to a file rather than printing to     stdout.
 * ### amazonFresh.py
-  Use this to order from Amazon Fresh
+  Use this to order from Amazon Fresh. I have not used this actively and have not enhanced to include cookie handling.         Probably will do later on if I get a chance.
   
 ## Purpose:
 These script automate the process of continuously checking Amazon Prime Now and Amazon Fresh for availabilty of delivery windows and sends a text msg to the user when a window opens up. Due to COVID-19 necessitated lockdowns, this process has become quite frustrating in recent days. At the time of writing this, slots open up very briefly and disappear soon enough. I spent few days to look for slots only to get frustrated by repeated checking and finding nothing. As they say: **"Frustration is the mother of all inventions!"** (actually probably I said this :wink:), this constant frustration led me to write up this script. I hope I can save you some of it and more importantly help you stay safe and indoors!
@@ -35,7 +35,7 @@ Before you run the script please fill in the necessary info that has been left b
 First things first. My total experience of Selenium is limited to developing this script! There are quite a few things that can be improved here but I want to get a working version up and running first rather than perfecting it. Things like putting in a config file to take in time delay params etc. Next Selenium is supposed to be used as a testing framework. I have tried to test this script to cover some variety of workflows but there can be some gotchas that I might have missed so don't be surprised if this does not work exactly the way it is supposed to on the first run! There are a lot of moving pieces here such as your amazon landing page might be slightly different; the websites themselves are dynamic and they constantly evolve which can result in some checks that work as of now fail. You might have to do some minor tweaks here and there!
 
 ## Future work:
-* Storing and passing cookies across sessions to prevent login across runs.
+* Storing and passing cookies across sessions to prevent login across runs. *This is done for amazonPrimeNow.py [04/12/2020]*
 * Fully automate the ordering process. There are a few things to keep in mind before doing this however. To list just one example: All items that were added in cart are not guaranteed to be present at time of check out as many go out of stock. This can at times lead to your cart value dropping lower than the free delievery threshold and may incurr additional charges etc.
 
 ## Licensing:
