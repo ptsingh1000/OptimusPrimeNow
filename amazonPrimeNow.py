@@ -32,7 +32,7 @@ class AutomateGroceryDelivery:
                             filemode='w')
         #Creating an object 
         self.logger = logging.getLogger() 
-        #Setting the threshold of logger to DEBUG 
+        #Setting the threshold of logger to INFO 
         self.logger.setLevel(logging.INFO)
         
         # This is the right way to source sid and token. Put these an env file and source it in python
