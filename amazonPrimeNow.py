@@ -2,7 +2,10 @@ import os
 import sys
 import argparse
 import time
+import json
+import logging
 
+from os import path
 from selenium import webdriver
 from selenium.common import exceptions
 
@@ -19,35 +22,87 @@ class AutomateGroceryDelivery:
 
         self.my_mobile = "your cell number here"
         self.twilio_num = "registered twilio number here"
+        self.text_content = "Slots Available on Amazon PrimeNow. Order now!"
+        self.long_pause = 30
+        self.short_pause = 2
+
+        #Create and configure logger 
+        logging.basicConfig(filename="amazon_prime_now.log", 
+                            format='%(asctime)s %(message)s', 
+                            filemode='w')
+        #Creating an object 
+        self.logger = logging.getLogger() 
+        #Setting the threshold of logger to DEBUG 
+        self.logger.setLevel(logging.INFO)
         
         # This is the right way to source sid and token. Put these an env file and source it in python
         # You *can* put them directly here as well but that is **INSCEURE**
         self.account_sid = os.environ['TWILIO_ACCOUNT_SID']
         self.auth_token = os.environ['TWILIO_AUTH_TOKEN']
-        self.amazon_prime_url = 'prime now sign in page_url here'
-        self.driver = webdriver.Chrome('optional path_to_driver')  # Optional argument, if not specified will search PATH.
+        self.cookies_file = 'prime_now_session_cookies.data'
+        self.amazon_prime_base_url = 'https://primenow.amazon.com/'
+        self.amazon_prime_signin_url = self.amazon_prime_base_url + 'your location specific remainder url'
+        self.amazon_prime_cart_url = self.amazon_prime_base_url + 'cart?ref_=pn_sf_nav_cart'
+        self.driver = webdriver.Chrome('optional path_to_driver')  # Optional argument, if not specified will search path.
         self.driver.maximize_window()
-        self.long_pause = 20
-        self.short_pause = 2
+        self.cookies_set = False
+        self.load_cookies()        
 
-    def send_sms(self):
+    def save_cookies(self, overwrite = False):
+        if overwrite or path.exists(self.cookies_file) == False: # either overwrite mode or first time run
+            cookies = self.driver.get_cookies()
+            cookies_json_str = json.dumps(cookies)
+            f = open(self.cookies_file, "w")
+            f.write(cookies_json_str)
+            f.close()
+
+    def get_cookies(self):
+        if path.exists(self.cookies_file):
+            f = open(self.cookies_file, "r")
+            cookies = json.loads(f.read())
+            self.logger.info("returning cookies...")
+            return cookies
+        else:
+            return None
+
+    def load_cookies(self):
+        cookies = self.get_cookies()
+        if cookies:
+            self.driver.get(self.amazon_prime_base_url)
+            for cookie in cookies:
+                #expiry is no longer accepted when adding so remove it
+                #TODO: Do we need to worry about cookies getting expired??
+                if 'expiry' in cookie:
+                    del cookie['expiry']
+                self.driver.add_cookie(cookie)
+
+            self.cookies_set = True
+        self.logger.info("succesfully loaded cookies..")
+            
+
+    def send_sms(self, msg = None):
         # Your Account Sid and Auth Token from twilio.com/console
-        print("sending sms...")
+        self.logger.info("sending sms...")
+        
+        text_content = self.text_content
+        if msg:
+            text_content = msg
+
         client = Client(self.account_sid, self.auth_token)
 
         client.messages.create(
-            to=self.my_mobile, 
-            from_=self.twilio_num,
-            body="Slots Available on Amazon PrimeNow. Order now!")
-
+            to = self.my_mobile, 
+            from_ = self.twilio_num,
+            body = text_content)
 
     def login(self, redirect = True):
-
         # login is called from two places:
         # 1.) initial login
         # 2.) when password is asked again for sign in
+        self.logger.info("logging in...")
         if redirect:
-            self.driver.get(self.amazon_prime_url)
+            self.driver.get(self.amazon_prime_signin_url)
+ 
         try:
             user_name = self.driver.find_element_by_id('ap_email')
             user_name.clear()
@@ -67,62 +122,77 @@ class AutomateGroceryDelivery:
             # if we find email entry again then this means that we got captcha
             self.driver.find_element_by_id('ap_email')
             time.sleep(self.long_pause) # allow time to enter captcha
-            self.login(False)
+            self.login(redirect = False)
         except: # handle OTP
             # allow time for optional OTP authentication
             try:
                 self.driver.find_element_by_xpath('//*[contains(text(),"Enter OTP")]')
+                self.logger.info("OTP entry required. Waiting for " + str(self.long_pause) + " secs.")
                 time.sleep(self.long_pause)
                 self.driver.find_element_by_id('auth-signin-button').click()
                 time.sleep(self.short_pause)
             except:
-                pass
+                pass #OTP not asked
 
-    def goCartCheckoutReadyAndNotify(self):
-        # might need to change this class search text in some cases. start by removing partial text
-        # ex: just search for "page_header_cart_button__cart-icon-count" below if does not work
-        # if that does not work you will need to inspect the cart element on top right of the page
-        # that shows the cart with the number of items in the cart.
-        cart = self.driver.find_element_by_xpath('//span[starts-with(@class,"page_header_cart_button__cart-icon-count__3J3sx")]')#page_header_cart_button__cart-icon-count__3J3sx
-        cart.click()
-        time.sleep(self.short_pause)
+        # save cookies at the end of login
+        self.save_cookies()
+
+    def execute(self):
+        if self.cookies_set:
+            self.logger.info("Going to cart directly...")
+            self.driver.get(self.amazon_prime_cart_url)
+            time.sleep(self.short_pause)
+        else:
+        # if running for the first time it will come here
+            self.logger.info("Script ran for the first time. Starting with home page.")
+            self.login()
+            cart = self.driver.find_element_by_xpath('//span[starts-with(@class,"page_header_cart_button__cart-icon-count__3J3sx")]')#page_header_cart_button__cart-icon-count__3J3sx
+            cart.click()
+
         # go to checkout page
+        time.sleep(self.short_pause)
         checkout_btn = self.driver.find_element_by_xpath('//span[contains(text(),"Proceed to checkout")]') #Proceed to checkout
         checkout_btn.click()
+        self.logger.info("Proceeding to checkout...")
         time.sleep(self.short_pause)
-        # see if password is asked again
+        
+        # see if password is asked again (by trying to login. will go to except block if not asked)
         # if so then enter it
         try:
-            self.login(False) # no redirect to login page # we already at the login screen
+            self.login(redirect = False) # no redirect to login page # we already at the login screen
         except:
-            print("No password asked again... Continuing...")
+            self.logger.info("No password asked again... Continuing...")
 
+        # saving all the cookies stored until now
+        # Also refreshes the cookies in each run of the script
+        self.save_cookies(overwrite=True)
  
         # See if slots available
         slot_available = False
         count = 1
         while (not slot_available):
-            print("no slots available. Trying again... attempt = ", count)
+            self.logger.info("No slots available. Trying again... attempt = " + str(count))
             # see if we landed on proceed to check out page
             # sometimes after many refreshes you are re-directed to the proceed to checkout page again
-            # if so then go to final checkout page
+            # therefore we need to check for it and if so then go to final checkout page again
             try:
                 cb = self.driver.find_element_by_xpath('//span[contains(@class, "cart-checkout-button")]')
                 cb.click()
-                print("checkout button again...")
+                self.logger.info("checkout button again...")
                 # see if password is asked again
                 # if so then enter it
                 try:
-                    self.login(False) # no redirect to login page # we already at the login screen
+                    self.login(redirect = False) # no redirect to login page # we already at the login screen
                 except:
-                    print("No password asked again... Continuing...")                
+                    self.logger.info("No password asked again... Continuing...")                
             except:
-            # do nothing
+                # do nothing as we are on right page
                 pass
                       
             time.sleep(self.long_pause)
             count+=1
 
+            # Check if any slots available. Prime now displays the below msg if that is the case
             try:
                 self.driver.find_element_by_xpath('//*[contains(text(),"Be sure to chill any perishables upon delivery")]')
                 slot_available = True
@@ -131,9 +201,9 @@ class AutomateGroceryDelivery:
                 self.driver.refresh()                
 
         # Delivery slot available! Send sms
-        self.send_sms()     
+        self.send_sms()
+        self.save_cookies(overwrite = True) # saving all the cookies stored until now   
 
 
 a = AutomateGroceryDelivery()
-a.login()
-a.goCartCheckoutReadyAndNotify()
+a.execute()
