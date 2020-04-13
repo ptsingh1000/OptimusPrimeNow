@@ -1,5 +1,5 @@
 # OptimusPrimeNow
-**OptimusPrimeNow** is designed to help people find the much coveted delivery windows on Amazon Prime and Amazon Fresh during COVID-19 lockdown automatically! :smiley:
+**OptimusPrimeNow** is designed to help people find the much coveted delivery windows on Amazon Prime Now and Amazon Fresh during COVID-19 lockdown automatically! :smiley:
 
 ## Scripts:
 * ### amazonPrimeNow.py
