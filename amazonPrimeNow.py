@@ -146,7 +146,7 @@ class AutomateGroceryDelivery:
         # if running for the first time it will come here
             self.logger.info("Script ran for the first time. Starting with home page.")
             self.login()
-            cart = self.driver.find_element_by_xpath('//span[starts-with(@class,"page_header_cart_button__cart-icon-count__3J3sx")]')#page_header_cart_button__cart-icon-count__3J3sx
+            cart = self.driver.find_element_by_xpath('//span[starts-with(@class,"page_header_cart_button__cart-icon-count__")]')
             cart.click()
 
         # go to checkout page
